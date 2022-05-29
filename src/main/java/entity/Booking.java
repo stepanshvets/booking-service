@@ -1,6 +1,8 @@
 package entity;
 
 import javax.persistence.*;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 @Entity
 @Table(name = "bookings")
@@ -20,7 +22,7 @@ public class Booking {
     @JoinColumn(name = "apartment_id")
     private Apartment apartment;
 
-    @ManyToOne
+    @ManyToOne()
     @JoinColumn(name = "customer_id")
     private Customer customer;
 
@@ -80,7 +82,29 @@ public class Booking {
     }
 
     public String[] toArrayString() {
-        return new String[] {Integer.toString(id), start, end,
+        return new String[]{Integer.toString(id), start, end,
                 Integer.toString(apartment.getId()), Integer.toString(customer.getId())};
+    }
+
+    public long getNumberDays() {
+        LocalDate start = LocalDate.parse(getStart());
+        LocalDate end = LocalDate.parse(getEnd());
+        LocalDate monthsAgo = LocalDate.now().minusMonths(1);
+        LocalDate now = LocalDate.now();
+        return start.until(end, ChronoUnit.DAYS) + 1;
+    }
+
+    public long getNumberDaysByMonth() {
+        LocalDate start = LocalDate.parse(getStart());
+        LocalDate end = LocalDate.parse(getEnd());
+        LocalDate monthsAgo = LocalDate.now().minusMonths(1);
+        LocalDate now = LocalDate.now();
+        if (start.isAfter(now))
+            return 0;
+        if (start.isBefore(monthsAgo))
+            start = monthsAgo;
+        if (end.isAfter(now))
+            end = now;
+        return start.until(end, ChronoUnit.DAYS) + 1;
     }
 }

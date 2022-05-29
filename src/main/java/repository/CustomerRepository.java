@@ -7,7 +7,7 @@ import javax.persistence.Persistence;
 import java.util.List;
 
 public class CustomerRepository implements Repository<Customer> {
-    final private EntityManager entityManager;
+    private EntityManager entityManager;
 
     public CustomerRepository() {
         entityManager = Persistence.createEntityManagerFactory("test").createEntityManager();
@@ -20,6 +20,8 @@ public class CustomerRepository implements Repository<Customer> {
 
     @Override
     public Customer get(int id) {
+        entityManager.close();
+        entityManager = Persistence.createEntityManagerFactory("test").createEntityManager();
         return entityManager.find(Customer.class, id);
     }
 

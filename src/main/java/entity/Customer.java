@@ -15,7 +15,7 @@ public class Customer extends Person {
     private String email;
 
 
-//    @OneToMany(cascade = CascadeType.ALL)
+    //    @OneToMany(cascade = CascadeType.ALL)
 //    @JoinColumn(name = "customer_id")
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "customer")
     private List<Booking> bookings;
@@ -58,7 +58,7 @@ public class Customer extends Person {
     }
 
     public String[] toArrayString() {
-        return new String[] {Integer.toString(id), getName(),
+        return new String[]{Integer.toString(id), getName(),
                 getSurname(), getEmail()};
     }
 }

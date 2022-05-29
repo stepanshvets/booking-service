@@ -40,21 +40,22 @@ public class Report {
         Paragraph paragraph1 = new Paragraph("List of apartments", font);
         paragraph1.setAlignment(Paragraph.ALIGN_CENTER);
 
-        PdfPTable t = new PdfPTable(3);
+        PdfPTable t = new PdfPTable(5);
         PdfWriter.getInstance(document, new FileOutputStream("Report.pdf"));
 
         for (String nameColumn : titleTableApartment)
             t.addCell(new PdfPCell(new Phrase(nameColumn, font)));
-        for (Apartment apartment : apartmentService.getAllApartments())
+        t.addCell(new PdfPCell(new Phrase("Days by month", font)));
+        for (Apartment apartment : apartmentService.getAllApartments()) {
             for (String string : apartment.toArrayString())
                 t.addCell(new Phrase(string, font));
+            t.addCell(new Phrase(Long.toString(apartmentService.daysPerMonth(apartment)), font));
+        }
 
         document.open();
         document.add(paragraphTitle);
         document.add(new Paragraph("\n"));
-        document.add(new Paragraph("Number of apartments: " + apartmentService.getAllApartments().size(), font));
-        document.add(new Paragraph("Number of bookings: " + bookingService.getAllBookings().size(), font));
-        document.add(new Paragraph("Number of customers: " + customerService.getAllCustomers().size(), font));
+        document.add(new Paragraph("Number of customers by month: " + bookingService.getNumberCustomersByMonth(), font));
         document.add(new Paragraph("\n"));
         document.add(paragraph1);
         document.add(new Paragraph("\n"));

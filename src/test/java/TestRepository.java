@@ -1,5 +1,6 @@
 import entity.Apartment;
-import org.junit.*;
+import org.junit.Assert;
+import org.junit.Test;
 import repository.ApartmentRepository;
 
 public class TestRepository {

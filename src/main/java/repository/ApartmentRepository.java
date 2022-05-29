@@ -7,7 +7,7 @@ import javax.persistence.Persistence;
 import java.util.List;
 
 public class ApartmentRepository implements Repository<Apartment> {
-    final private EntityManager entityManager;
+    private EntityManager entityManager;
 
     public ApartmentRepository(){
         entityManager = Persistence.createEntityManagerFactory("test").createEntityManager();
@@ -15,6 +15,7 @@ public class ApartmentRepository implements Repository<Apartment> {
 
     @Override
     public List<Apartment> getAll() {
+        entityManager = Persistence.createEntityManagerFactory("test").createEntityManager();
         return entityManager.createQuery("SELECT a FROM Apartment a").getResultList();
     }
 
@@ -33,7 +34,7 @@ public class ApartmentRepository implements Repository<Apartment> {
     @Override
     public void update(Apartment apartment) {
         entityManager.getTransaction().begin();
-        entityManager.persist(apartment);
+        entityManager.merge(apartment);
         entityManager.getTransaction().commit();
     }
 

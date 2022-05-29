@@ -13,7 +13,7 @@ public class CustomerService {
         this.customerRepository = customerRepository;
     }
 
-    public List<Customer> getAllCustomers(){
+    public List<Customer> getAllCustomers() {
         return customerRepository.getAll();
     }
 
@@ -33,10 +33,12 @@ public class CustomerService {
         customerRepository.delete(customer);
     }
 
-    public String[][] toArrayArrayString(List<Customer> customers){
+    public String[][] toArrayArrayString(List<Customer> customers) {
+        if (customers == null)
+            return new String[][]{};
         String[][] arrayString = new String[customers.size()][];
         int i = 0;
-        for (Customer customer: customers)
+        for (Customer customer : customers)
             arrayString[i++] = customer.toArrayString();
         return arrayString;
     }

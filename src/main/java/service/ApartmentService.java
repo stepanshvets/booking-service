@@ -17,7 +17,7 @@ public class ApartmentService {
         this.apartmentRepository = apartmentRepository;
     }
 
-    public List<Apartment> getAllApartments(){
+    public List<Apartment> getAllApartments() {
         return apartmentRepository.getAll();
     }
 
@@ -46,11 +46,9 @@ public class ApartmentService {
             dateEnd = LocalDate.parse(arrayString[1]);
             if (dateEnd.isBefore(dateStart))
                 throw new ValidationException("Wrong date!");
-        }
-        catch (DateTimeParseException exception){
+        } catch (DateTimeParseException exception) {
             throw new ValidationException("Date should be yyyy-mm-dd!");
-        }
-        catch (ValidationException exception){
+        } catch (ValidationException exception) {
             throw new ValidationException("Wrong date!");
         }
 
@@ -58,12 +56,11 @@ public class ApartmentService {
         List<Apartment> apartments;
         if (arrayString[2].equals("") || arrayString[3].equals(""))
             apartments = apartmentRepository.getAll();
-        else{
+        else {
             try {
                 int minPrice = Integer.parseInt(arrayString[2]), maxPrice = Integer.parseInt(arrayString[3]);
                 apartments = apartmentRepository.getByPrice(minPrice, maxPrice);
-            }
-            catch (IllegalArgumentException exception) {
+            } catch (IllegalArgumentException exception) {
                 throw new ValidationException("Wrong Filling!");
             }
         }
@@ -83,10 +80,20 @@ public class ApartmentService {
         return availableApartments;
     }
 
-    public String[][] toArrayArrayString(List<Apartment> apartments ){
+    public long daysPerMonth(Apartment apartment) {
+        long days = 0;
+        for (Booking booking : apartment.getBookings()) {
+            days += booking.getNumberDaysByMonth();
+        }
+        return days;
+    }
+
+    public String[][] toArrayArrayString(List<Apartment> apartments) {
+        if (apartments == null)
+            return new String[][]{};
         String[][] arrayString = new String[apartments.size()][];
         int i = 0;
-        for (Apartment apartment: apartments)
+        for (Apartment apartment : apartments)
             arrayString[i++] = apartment.toArrayString();
         return arrayString;
     }
@@ -96,9 +103,8 @@ public class ApartmentService {
         apartment.setAddress(arrayString[0]);
         try {
             apartment.setSeats(Integer.parseInt(arrayString[1]));
-            apartment.setSeats(Integer.parseInt(arrayString[2]));
-        }
-        catch (IllegalArgumentException exception) {
+            apartment.setPrice(Integer.parseInt(arrayString[2]));
+        } catch (IllegalArgumentException exception) {
             throw new ValidationException("Wrong Filling!");
         }
     }

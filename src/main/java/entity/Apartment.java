@@ -79,6 +79,6 @@ public class Apartment {
     }
 
     public String[] toArrayString() {
-        return new String[] {Integer.toString(id), address, Integer.toString(seats), Integer.toString(price)};
+        return new String[]{Integer.toString(id), address, Integer.toString(seats), Integer.toString(price)};
     }
 }
