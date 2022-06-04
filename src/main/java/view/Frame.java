@@ -17,6 +17,9 @@ import service.BookingService;
 import service.CustomerService;
 import service.EmployeeService;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -48,6 +51,7 @@ public class Frame {
     private JButton makeBooking;
     private JButton viewBookings;
     private JButton viewInformation;
+    private JPanel panel;
     private JButton searchApartment;
 
     private DefaultTableModel tableModelApartments;
@@ -59,7 +63,7 @@ public class Frame {
     private JScrollPane scroll;
 
     public void show() {
-        apartmentService = new ApartmentService(new ApartmentRepository());
+                apartmentService = new ApartmentService(new ApartmentRepository());
         customerService = new CustomerService(new CustomerRepository());
         bookingService = new BookingService(apartmentService, customerService, new BookingRepository());
         employeeService = new EmployeeService(new EmployeeRepository());
@@ -137,6 +141,9 @@ public class Frame {
                     }
                     if (current == 2) {
                         frame.remove(customerPanel);
+                    }
+                    if (current == 4) {
+                        frame.remove(panel);
                     }
                     current = next;
                     switch (current) {
@@ -375,7 +382,7 @@ public class Frame {
             public void actionPerformed(ActionEvent ae) {
                 try {
                     didNotSelectRow(table);
-                    JPanel panel = new JPanel(new BorderLayout());
+                    panel = new JPanel(new BorderLayout());
                     JPanel north = new JPanel();
                     int id = Integer.parseInt(tableModel.getValueAt(table.getSelectedRow(), 0).toString());
                     Customer customer = customerService.getCustomer(id);
@@ -392,8 +399,15 @@ public class Frame {
                     JScrollPane scrollBookings = new JScrollPane(tableBookings);
                     panel.add(scrollBookings, BorderLayout.CENTER);
 
-                    JOptionPane.showMessageDialog(frame, panel, "Information of customers with id " + id,
-                            JOptionPane.INFORMATION_MESSAGE);
+                    frame.remove(scroll);
+                    frame.remove(customerPanel);
+                    frame.add(panel, BorderLayout.CENTER);
+                    current = 4;
+                    frame.revalidate();
+                    frame.repaint();
+
+//                    JOptionPane.showMessageDialog(frame, panel, "Information of customers with id " + id,
+//                            JOptionPane.INFORMATION_MESSAGE);
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(frame, ex.getMessage(), "Warning!",
                             JOptionPane.WARNING_MESSAGE);
@@ -456,10 +470,6 @@ public class Frame {
         table = new JTable(tableModel);
         scroll = new JScrollPane(table);
         frame.add(scroll, BorderLayout.CENTER);
-    }
-
-    void initApartmentPanel(){
-
     }
 
     public void didNotSelectEntity() throws NoSuchEntity {

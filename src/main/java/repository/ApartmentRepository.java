@@ -9,12 +9,13 @@ import java.util.List;
 public class ApartmentRepository implements Repository<Apartment> {
     private EntityManager entityManager;
 
-    public ApartmentRepository(){
+    public ApartmentRepository() {
         entityManager = Persistence.createEntityManagerFactory("test").createEntityManager();
     }
 
     @Override
     public List<Apartment> getAll() {
+        entityManager.close();
         entityManager = Persistence.createEntityManagerFactory("test").createEntityManager();
         return entityManager.createQuery("SELECT a FROM Apartment a").getResultList();
     }

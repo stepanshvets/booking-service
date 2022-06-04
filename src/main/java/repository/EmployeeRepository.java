@@ -7,7 +7,7 @@ import javax.persistence.Persistence;
 import java.util.List;
 
 public class EmployeeRepository implements Repository<Employee>{
-    final private EntityManager entityManager;
+    private EntityManager entityManager;
 
     public EmployeeRepository() {
         entityManager = Persistence.createEntityManagerFactory("test").createEntityManager();

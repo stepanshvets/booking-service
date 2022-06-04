@@ -7,7 +7,7 @@ import javax.persistence.Persistence;
 import java.util.List;
 
 public class BookingRepository implements Repository<Booking> {
-    final private EntityManager entityManager;
+    private EntityManager entityManager;
 
     public BookingRepository() {
         entityManager = Persistence.createEntityManagerFactory("test").createEntityManager();

@@ -33,6 +33,8 @@ public class BookingService {
     }
 
     public void saveBooking(Booking booking) {
+//        customerService.updateCustomer(booking.getCustomer());
+//        apartmentService.updateApartment(booking.getApartment());
         bookingRepository.save(booking);
     }
 
@@ -81,8 +83,6 @@ public class BookingService {
             throw new NoSuchObject("There is not such apartment!");
         else {
             for (Booking b : apartment.getBookings()) {
-                if (b.getId() == booking.getId())
-                    continue;
                 LocalDate otherDateStart = LocalDate.parse(b.getStart());
                 LocalDate otherDateEnd = LocalDate.parse(b.getEnd());
                 if (!(dateStart.isBefore(otherDateStart) && dateEnd.isBefore(otherDateStart) ||

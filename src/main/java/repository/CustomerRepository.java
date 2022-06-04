@@ -22,6 +22,8 @@ public class CustomerRepository implements Repository<Customer> {
     public Customer get(int id) {
         entityManager.close();
         entityManager = Persistence.createEntityManagerFactory("test").createEntityManager();
+        //Customer customer = entityManager.find(Customer.class, id);
+        //entityManager.refresh(customer);
         return entityManager.find(Customer.class, id);
     }
 
